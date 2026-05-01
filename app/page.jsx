@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const steps = [
@@ -58,6 +59,15 @@ function SecondaryLink({ href, children, className = "" }) {
 
 export default function LandingPage() {
   const [modalOpen, setModalOpen] = useState(false);
+  const [artistName, setArtistName] = useState("");
+  const router = useRouter();
+
+  const submitSearch = (event) => {
+    event.preventDefault();
+    const normalizedArtist = artistName.trim();
+    if (!normalizedArtist) return;
+    router.push(`/market-insights?artist=${encodeURIComponent(normalizedArtist)}`);
+  };
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-ax-black text-white">
@@ -74,11 +84,14 @@ export default function LandingPage() {
           <Link href="/dashboard" className="transition hover:text-white">
             Dashboard
           </Link>
-          <Link href="/market-insights" className="transition hover:text-white">
-            Demo Results
+          <Link href="/how-it-works" className="transition hover:text-white">
+            How It Works
           </Link>
-          <PrimaryLink href="/dashboard" className="min-h-10 px-5 py-2 text-xs">
-            Open Demo
+          <Link href="/results" className="transition hover:text-white">
+            Demo
+          </Link>
+          <PrimaryLink href="/workspace" className="min-h-10 px-5 py-2 text-xs">
+            Open App
           </PrimaryLink>
         </nav>
       </header>
@@ -102,12 +115,24 @@ export default function LandingPage() {
             <span className="block font-black text-white">Start selling out cities.</span>
           </p>
 
-          <div className="mt-10 max-w-2xl animate-fadeUp [animation-delay:460ms]">
-            <div className="group flex min-h-16 items-center gap-4 rounded-full border border-white/20 bg-white/[.085] px-6 py-5 text-base font-extrabold text-white/72 shadow-[0_24px_90px_rgba(0,0,0,.42)] backdrop-blur-xl transition duration-300 hover:border-red-300/70 hover:shadow-[0_0_34px_rgba(225,29,72,.22)]">
+          <form onSubmit={submitSearch} className="mt-10 max-w-2xl animate-fadeUp [animation-delay:460ms]">
+            <div className="group flex min-h-16 items-center gap-4 rounded-full border border-white/20 bg-white/[.085] px-6 py-3 text-base font-extrabold text-white/72 shadow-[0_24px_90px_rgba(0,0,0,.42)] backdrop-blur-xl transition duration-300 hover:border-red-300/70 hover:shadow-[0_0_34px_rgba(225,29,72,.22)]">
               <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-ax-hot shadow-[0_0_18px_rgba(225,29,72,.8)]" />
-              <span>Search artist (e.g. TWICE, Drake, Taylor Swift)</span>
+              <input
+                value={artistName}
+                onChange={(event) => setArtistName(event.target.value)}
+                className="min-w-0 flex-1 bg-transparent text-white outline-none placeholder:text-white/55"
+                placeholder="Enter an artist to generate a tour plan (e.g. TWICE, Drake, Taylor Swift)"
+                aria-label="Artist name"
+              />
+              <button
+                type="submit"
+                className="hidden rounded-full bg-white px-5 py-2 text-xs font-black uppercase tracking-[.14em] text-ax-ink transition hover:bg-red-50 hover:text-ax-red sm:inline-flex"
+              >
+                Analyze
+              </button>
             </div>
-          </div>
+          </form>
 
           <div className="mt-8 flex animate-fadeUp flex-col gap-4 [animation-delay:600ms] sm:flex-row">
             <PrimaryLink href="/dashboard" className="px-10">

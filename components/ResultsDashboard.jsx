@@ -587,10 +587,42 @@ export default function ResultsDashboard() {
 
   useEffect(() => {
     const storedDemoArtists = JSON.parse(window.localStorage.getItem(demoArtistsKey) || "[]");
-    const availableArtists = [...storedDemoArtists, ...artists.filter((artist) => !storedDemoArtists.some((demo) => demo.id === artist.id))];
-    setDemoArtists(storedDemoArtists);
-    const routeArtistId = new URLSearchParams(window.location.search).get("artistId");
-    if (routeArtistId && availableArtists.some((artist) => artist.id === routeArtistId)) setArtistId(routeArtistId);
+    let nextDemoArtists = storedDemoArtists;
+    const params = new URLSearchParams(window.location.search);
+    const routeArtistId = params.get("artistId");
+    const routeArtistName = params.get("artist")?.trim();
+    let availableArtists = [...nextDemoArtists, ...artists.filter((artist) => !nextDemoArtists.some((demo) => demo.id === artist.id))];
+
+    if (routeArtistName) {
+      const existingArtist = availableArtists.find((artist) => artist.name.toLowerCase() === routeArtistName.toLowerCase());
+      if (existingArtist) {
+        setArtistId(existingArtist.id);
+      } else {
+        const generatedArtist = {
+          id: `search-${routeArtistName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "") || "artist"}`,
+          name: routeArtistName,
+          tier: "B-tier / Mid-to-high",
+          readiness: "Ready",
+          topMarket: "Los Angeles, CA",
+          genre: "Pop",
+          followers: "2.8M",
+          popularity: 74,
+          engagement: 78,
+          spotifyImageUrl: "",
+          spotifyArtistData: { images: [] },
+          image: "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?auto=format&fit=crop&w=900&q=80",
+          summary: "Demo artist generated from landing-page search with simulated demand and routing signals."
+        };
+        nextDemoArtists = [generatedArtist, ...nextDemoArtists.filter((artist) => artist.id !== generatedArtist.id)];
+        window.localStorage.setItem(demoArtistsKey, JSON.stringify(nextDemoArtists));
+        availableArtists = [...nextDemoArtists, ...artists.filter((artist) => !nextDemoArtists.some((demo) => demo.id === artist.id))];
+        setArtistId(generatedArtist.id);
+      }
+    } else if (routeArtistId && availableArtists.some((artist) => artist.id === routeArtistId)) {
+      setArtistId(routeArtistId);
+    }
+
+    setDemoArtists(nextDemoArtists);
     const stored = window.sessionStorage.getItem(selectedStorageKey);
     if (stored) setSelectedIds(JSON.parse(stored));
     const searchTarget = JSON.parse(window.sessionStorage.getItem("axcess_search_target") || "null");
