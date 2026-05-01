@@ -1,563 +1,139 @@
 "use client";
 
 import { useState } from "react";
+import Button from "@/components/Button";
 
-const steps = [
+const walkthroughSteps = [
   {
     title: "Create an artist profile",
-    body: "Start with an artist name, then layer in optional social, streaming, and tour signals."
+    body: "Enter an artist name and optional social, streaming, and tour signals to start a temporary demo analysis."
   },
   {
-    title: "Find demand signals",
-    body: "Review city demand, market fit, underserved opportunities, and recommended routing logic."
+    title: "Read market demand",
+    body: "Axcess scores cities using demand, engagement, venue fit, and simulated routing context."
   },
   {
-    title: "Build the plan",
-    body: "Turn priority markets into a draft route with capacity, venue, and date recommendations."
+    title: "Build a route",
+    body: "Select stops, include anchor markets, group nearby demand into hubs, and draft a tour plan."
   },
   {
-    title: "Share the report",
-    body: "Export the tour strategy for teams, partners, and decision makers."
+    title: "Export the plan",
+    body: "Review recommended cities, venues, dates, and capacity ranges before sharing the report."
   }
 ];
 
-function CtaLink({ href, children, variant = "primary", onClick }) {
-  const className = variant === "primary" ? "cta ctaPrimary" : "cta ctaSecondary";
-
-  if (href) {
-    return (
-      <a className={className} href={href}>
-        {children}
-      </a>
-    );
-  }
+export default function Landing() {
+  const [walkthroughOpen, setWalkthroughOpen] = useState(false);
 
   return (
-    <button className={className} type="button" onClick={onClick}>
-      {children}
-    </button>
-  );
-}
+    <main className="relative min-h-screen overflow-hidden bg-ax-black text-white">
+      <div className="absolute inset-0 animate-drift bg-[radial-gradient(circle_at_16%_34%,rgba(151,0,0,.52),transparent_25%),radial-gradient(circle_at_82%_72%,rgba(225,29,72,.16),transparent_38%),linear-gradient(135deg,#0A0A0A_0%,#070707_58%,#140202_100%)] bg-[length:150%_150%,180%_180%,100%_100%]" />
+      <div className="noise absolute inset-0 opacity-35" />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,.035)_1px,transparent_1px),linear-gradient(rgba(255,255,255,.025)_1px,transparent_1px)] bg-[size:92px_92px]" />
 
-export default function HomePage() {
-  const [modalOpen, setModalOpen] = useState(false);
-
-  return (
-    <main className="landing">
-      <div className="glow" />
-      <div className="grain" />
-      <div className="grid" />
-
-      <header className="nav">
-        <a className="brand" href="/">
+      <header className="relative z-10 flex items-center justify-between px-6 py-6 lg:px-14">
+        <a href="/" className="text-sm font-black uppercase tracking-[.28em] text-white">
           AXCESS
         </a>
-        <nav className="navLinks" aria-label="Primary navigation">
-          <a href="/dashboard">Dashboard</a>
-          <a href="/market-insights">Demo Results</a>
-          <CtaLink href="/dashboard">Open Demo</CtaLink>
+        <nav className="hidden items-center gap-7 text-sm font-bold text-white/62 md:flex">
+          <a className="transition hover:text-white" href="/market-insights">
+            Demo Results
+          </a>
+          <a className="transition hover:text-white" href="/reports">
+            Reports
+          </a>
+          <Button href="/dashboard" className="min-h-10 px-5 py-2 text-xs">
+            Open Demo
+          </Button>
         </nav>
       </header>
 
-      <section className="hero">
-        <div className="heroCopy">
-          <p className="eyebrow">Tour demand intelligence</p>
-          <div className="wordmark">AXCESS</div>
-          <h1>Plan tours where fans are already waiting.</h1>
-          <p className="subtext">
-            <span>Stop guessing markets.</span>
-            <strong>Start selling out cities.</strong>
+      <section className="relative z-10 grid min-h-[calc(100vh-88px)] items-center px-6 pb-20 lg:px-14">
+        <div className="max-w-5xl">
+          <p className="animate-fadeUp text-xs font-black uppercase tracking-[.28em] text-red-200/80">
+            Tour demand intelligence
+          </p>
+          <div className="mt-5 animate-fadeUp text-[clamp(4.25rem,12vw,11rem)] font-black leading-[.78] tracking-[.015em] text-[#f6f1f1] [animation-delay:80ms]">
+            AXCESS
+          </div>
+          <h1 className="mt-8 max-w-5xl animate-fadeUp text-[clamp(3rem,6.3vw,6.8rem)] font-black leading-[.9] tracking-tight [animation-delay:180ms]">
+            Plan tours where fans are already waiting.
+          </h1>
+          <p className="mt-8 animate-fadeUp text-xl font-semibold leading-8 text-white/64 [animation-delay:320ms] md:text-2xl">
+            <span className="block">Stop guessing markets.</span>
+            <em className="block font-black not-italic text-white">Start selling out cities.</em>
           </p>
 
-          <div className="searchBar" aria-label="Search artist placeholder">
-            <span className="pulse" />
-            <span>Search artist (e.g. TWICE, Drake, Taylor Swift)</span>
+          <div className="mt-10 max-w-2xl animate-fadeUp [animation-delay:460ms]">
+            <div className="group flex h-16 items-center gap-4 rounded-full border border-white/20 bg-white/[.085] px-6 text-base font-extrabold text-white/72 shadow-[0_24px_90px_rgba(0,0,0,.42)] backdrop-blur-xl transition duration-300 hover:border-red-300/70 hover:shadow-[0_0_34px_rgba(225,29,72,.22)]">
+              <span className="h-2.5 w-2.5 rounded-full bg-ax-hot shadow-[0_0_18px_rgba(225,29,72,.8)]" />
+              <span>Search artist (e.g. TWICE, Drake, Taylor Swift)</span>
+            </div>
           </div>
 
-          <div className="actions">
-            <CtaLink href="/dashboard">Try It Now</CtaLink>
-            <CtaLink variant="secondary" onClick={() => setModalOpen(true)}>
+          <div className="mt-8 flex animate-fadeUp flex-col gap-4 [animation-delay:600ms] sm:flex-row">
+            <Button href="/dashboard" className="px-10">
+              Try It Now
+            </Button>
+            <Button onClick={() => setWalkthroughOpen(true)} variant="secondary" className="px-10">
               See How It Works
-            </CtaLink>
+            </Button>
           </div>
         </div>
 
-        <aside className="signalCard" aria-label="Routing intelligence preview">
-          <p>Routing signal</p>
-          <strong>+27%</strong>
-          <span>underserved demand lift across priority markets</span>
-        </aside>
+        <div className="absolute bottom-[12vh] right-[7vw] hidden animate-floatSlow rounded-[2rem] border border-white/14 bg-white/[.055] p-6 shadow-[0_28px_110px_rgba(0,0,0,.48)] backdrop-blur-xl lg:block">
+          <p className="text-xs font-black uppercase tracking-[.18em] text-white/45">
+            Routing signal
+          </p>
+          <div className="mt-3 text-5xl font-black">+27%</div>
+          <p className="mt-2 max-w-48 text-sm font-bold leading-6 text-white/60">
+            underserved demand lift across priority markets
+          </p>
+        </div>
       </section>
 
-      {modalOpen ? (
-        <div className="modalOverlay" role="dialog" aria-modal="true" aria-label="How Axcess works">
-          <div className="modal">
-            <div className="modalHeader">
+      {walkthroughOpen ? (
+        <div className="fixed inset-0 z-50 grid place-items-center bg-black/74 px-5 backdrop-blur-md">
+          <div className="w-full max-w-3xl rounded-[2rem] border border-white/10 bg-[#101010] p-7 shadow-[0_40px_120px_rgba(0,0,0,.62)]">
+            <div className="flex items-start justify-between gap-5">
               <div>
-                <p className="eyebrow modalEyebrow">Product walkthrough</p>
-                <h2>How Axcess works</h2>
+                <p className="text-xs font-black uppercase tracking-[.18em] text-red-300">
+                  Product walkthrough
+                </p>
+                <h2 className="mt-3 text-4xl font-black tracking-tight">How Axcess works</h2>
               </div>
-              <button className="closeButton" type="button" onClick={() => setModalOpen(false)}>
+              <button
+                type="button"
+                onClick={() => setWalkthroughOpen(false)}
+                className="rounded-full border border-white/15 px-4 py-2 text-sm font-bold text-white/70 transition hover:border-red-300/70 hover:text-white"
+              >
                 Close
               </button>
             </div>
 
-            <div className="steps">
-              {steps.map((step, index) => (
-                <article className="step" key={step.title}>
-                  <p>Step {index + 1}</p>
-                  <h3>{step.title}</h3>
-                  <span>{step.body}</span>
+            <div className="mt-7 grid gap-3 md:grid-cols-2">
+              {walkthroughSteps.map((step, index) => (
+                <article key={step.title} className="rounded-2xl border border-white/10 bg-white/[.055] p-5">
+                  <div className="text-xs font-black uppercase tracking-[.16em] text-white/40">
+                    Step {index + 1}
+                  </div>
+                  <h3 className="mt-3 text-xl font-black">{step.title}</h3>
+                  <p className="mt-2 text-sm font-semibold leading-6 text-white/62">{step.body}</p>
                 </article>
               ))}
             </div>
 
-            <div className="modalActions">
-              <CtaLink href="/dashboard">Start</CtaLink>
-              <CtaLink href="/dashboard" variant="secondary">
+            <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+              <Button href="/dashboard" className="flex-1">
+                Start Now
+              </Button>
+              <Button href="/dashboard" variant="secondary" className="flex-1">
                 Skip
-              </CtaLink>
+              </Button>
             </div>
           </div>
         </div>
       ) : null}
-
-      <style jsx>{`
-        :global(*) {
-          box-sizing: border-box;
-        }
-
-        :global(body) {
-          margin: 0;
-          background: #0a0a0a;
-          color: #fff;
-          font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-        }
-
-        .landing {
-          position: relative;
-          min-height: 100vh;
-          overflow: hidden;
-          background: #0a0a0a;
-          color: #fff;
-        }
-
-        .glow,
-        .grain,
-        .grid {
-          position: absolute;
-          inset: 0;
-          pointer-events: none;
-        }
-
-        .glow {
-          animation: drift 18s ease-in-out infinite alternate;
-          background:
-            radial-gradient(circle at 16% 34%, rgba(177, 18, 38, 0.54), transparent 25%),
-            radial-gradient(circle at 82% 72%, rgba(225, 29, 72, 0.16), transparent 38%),
-            linear-gradient(135deg, #0a0a0a 0%, #070707 58%, #140202 100%);
-          background-size: 150% 150%, 180% 180%, 100% 100%;
-        }
-
-        .grain {
-          opacity: 0.32;
-          background-image:
-            linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
-          background-size: 3px 3px, 5px 5px;
-        }
-
-        .grid {
-          background-image:
-            linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-            linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px);
-          background-size: 92px 92px;
-        }
-
-        .nav {
-          position: relative;
-          z-index: 2;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          padding: 24px clamp(24px, 4vw, 56px);
-        }
-
-        .brand {
-          color: #fff;
-          font-size: 14px;
-          font-weight: 950;
-          letter-spacing: 0.28em;
-          text-decoration: none;
-        }
-
-        .navLinks {
-          display: flex;
-          align-items: center;
-          gap: 28px;
-        }
-
-        .navLinks a {
-          color: rgba(255, 255, 255, 0.62);
-          font-size: 14px;
-          font-weight: 800;
-          text-decoration: none;
-          transition: color 220ms ease;
-        }
-
-        .navLinks a:hover {
-          color: #fff;
-        }
-
-        .hero {
-          position: relative;
-          z-index: 1;
-          display: grid;
-          min-height: calc(100vh - 88px);
-          align-items: center;
-          padding: 0 clamp(24px, 4vw, 56px) 80px;
-        }
-
-        .heroCopy {
-          max-width: 1050px;
-        }
-
-        .eyebrow {
-          margin: 0;
-          animation: fadeUp 800ms cubic-bezier(0.16, 1, 0.3, 1) both;
-          color: rgba(255, 205, 211, 0.8);
-          font-size: 12px;
-          font-weight: 950;
-          letter-spacing: 0.28em;
-          text-transform: uppercase;
-        }
-
-        .wordmark {
-          margin-top: 20px;
-          animation: fadeUp 800ms cubic-bezier(0.16, 1, 0.3, 1) 80ms both;
-          color: #f6f1f1;
-          font-size: clamp(4.25rem, 12vw, 11rem);
-          font-weight: 950;
-          letter-spacing: 0.015em;
-          line-height: 0.78;
-        }
-
-        h1 {
-          max-width: 1030px;
-          margin: 32px 0 0;
-          animation: fadeUp 800ms cubic-bezier(0.16, 1, 0.3, 1) 180ms both;
-          font-size: clamp(3rem, 6.3vw, 6.8rem);
-          font-weight: 950;
-          letter-spacing: -0.045em;
-          line-height: 0.9;
-        }
-
-        .subtext {
-          margin: 32px 0 0;
-          animation: fadeUp 800ms cubic-bezier(0.16, 1, 0.3, 1) 320ms both;
-          color: rgba(255, 255, 255, 0.64);
-          font-size: clamp(1.25rem, 2vw, 1.55rem);
-          font-weight: 650;
-          line-height: 1.45;
-        }
-
-        .subtext span,
-        .subtext strong {
-          display: block;
-        }
-
-        .subtext strong {
-          color: #fff;
-          font-weight: 950;
-        }
-
-        .searchBar {
-          display: flex;
-          align-items: center;
-          gap: 16px;
-          width: min(100%, 680px);
-          min-height: 64px;
-          margin-top: 40px;
-          padding: 18px 24px;
-          animation: fadeUp 800ms cubic-bezier(0.16, 1, 0.3, 1) 460ms both;
-          border: 1px solid rgba(255, 255, 255, 0.2);
-          border-radius: 999px;
-          background: rgba(255, 255, 255, 0.085);
-          box-shadow: 0 24px 90px rgba(0, 0, 0, 0.42);
-          color: rgba(255, 255, 255, 0.72);
-          font-size: 16px;
-          font-weight: 850;
-          backdrop-filter: blur(18px);
-          transition: border-color 250ms ease, box-shadow 250ms ease;
-        }
-
-        .searchBar:hover {
-          border-color: rgba(248, 113, 113, 0.72);
-          box-shadow: 0 0 34px rgba(225, 29, 72, 0.22);
-        }
-
-        .pulse {
-          width: 10px;
-          height: 10px;
-          flex: 0 0 auto;
-          border-radius: 50%;
-          background: #e11d48;
-          box-shadow: 0 0 18px rgba(225, 29, 72, 0.82);
-        }
-
-        .actions {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 16px;
-          margin-top: 32px;
-          animation: fadeUp 800ms cubic-bezier(0.16, 1, 0.3, 1) 600ms both;
-        }
-
-        .cta {
-          display: inline-flex;
-          min-height: 54px;
-          align-items: center;
-          justify-content: center;
-          border-radius: 999px;
-          padding: 15px 34px;
-          cursor: pointer;
-          font-size: 14px;
-          font-weight: 950;
-          text-decoration: none;
-          transition: transform 260ms ease, box-shadow 260ms ease, border-color 260ms ease;
-        }
-
-        .cta:hover {
-          transform: translateY(-2px);
-        }
-
-        .ctaPrimary {
-          border: 0;
-          background: linear-gradient(90deg, #b11226, #e11d48);
-          box-shadow: 0 0 30px rgba(225, 29, 72, 0.38);
-          color: white;
-        }
-
-        .ctaPrimary:hover {
-          box-shadow: 0 0 40px rgba(225, 29, 72, 0.52);
-        }
-
-        .ctaSecondary {
-          border: 1px solid rgba(255, 255, 255, 0.2);
-          background: rgba(255, 255, 255, 0.1);
-          color: white;
-          backdrop-filter: blur(18px);
-        }
-
-        .ctaSecondary:hover {
-          border-color: rgba(248, 113, 113, 0.72);
-          box-shadow: 0 0 24px rgba(225, 29, 72, 0.18);
-        }
-
-        .signalCard {
-          position: absolute;
-          right: 7vw;
-          bottom: 12vh;
-          display: none;
-          width: 250px;
-          animation: floatSlow 8s ease-in-out infinite;
-          border: 1px solid rgba(255, 255, 255, 0.14);
-          border-radius: 32px;
-          background: rgba(255, 255, 255, 0.055);
-          box-shadow: 0 28px 110px rgba(0, 0, 0, 0.48);
-          padding: 24px;
-          backdrop-filter: blur(20px);
-        }
-
-        .signalCard p {
-          margin: 0;
-          color: rgba(255, 255, 255, 0.45);
-          font-size: 12px;
-          font-weight: 950;
-          letter-spacing: 0.18em;
-          text-transform: uppercase;
-        }
-
-        .signalCard strong {
-          display: block;
-          margin-top: 12px;
-          font-size: 52px;
-          font-weight: 950;
-          line-height: 1;
-        }
-
-        .signalCard span {
-          display: block;
-          margin-top: 10px;
-          color: rgba(255, 255, 255, 0.6);
-          font-size: 14px;
-          font-weight: 750;
-          line-height: 1.55;
-        }
-
-        .modalOverlay {
-          position: fixed;
-          z-index: 50;
-          inset: 0;
-          display: grid;
-          place-items: center;
-          padding: 20px;
-          background: rgba(0, 0, 0, 0.74);
-          backdrop-filter: blur(12px);
-        }
-
-        .modal {
-          width: min(100%, 760px);
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          border-radius: 32px;
-          background: #101010;
-          box-shadow: 0 40px 120px rgba(0, 0, 0, 0.62);
-          padding: 28px;
-        }
-
-        .modalHeader {
-          display: flex;
-          align-items: flex-start;
-          justify-content: space-between;
-          gap: 20px;
-        }
-
-        .modalEyebrow {
-          color: #fca5a5;
-        }
-
-        .modal h2 {
-          margin: 12px 0 0;
-          font-size: clamp(2rem, 4vw, 2.65rem);
-          font-weight: 950;
-          letter-spacing: -0.035em;
-        }
-
-        .closeButton {
-          border: 1px solid rgba(255, 255, 255, 0.15);
-          border-radius: 999px;
-          background: transparent;
-          color: rgba(255, 255, 255, 0.72);
-          cursor: pointer;
-          padding: 9px 16px;
-          font-size: 14px;
-          font-weight: 800;
-          transition: border-color 220ms ease, color 220ms ease;
-        }
-
-        .closeButton:hover {
-          border-color: rgba(248, 113, 113, 0.72);
-          color: white;
-        }
-
-        .steps {
-          display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 12px;
-          margin-top: 28px;
-        }
-
-        .step {
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          border-radius: 22px;
-          background: rgba(255, 255, 255, 0.055);
-          padding: 20px;
-        }
-
-        .step p {
-          margin: 0;
-          color: rgba(255, 255, 255, 0.4);
-          font-size: 12px;
-          font-weight: 950;
-          letter-spacing: 0.16em;
-          text-transform: uppercase;
-        }
-
-        .step h3 {
-          margin: 12px 0 0;
-          font-size: 20px;
-          font-weight: 950;
-        }
-
-        .step span {
-          display: block;
-          margin-top: 8px;
-          color: rgba(255, 255, 255, 0.62);
-          font-size: 14px;
-          font-weight: 650;
-          line-height: 1.65;
-        }
-
-        .modalActions {
-          display: flex;
-          gap: 12px;
-          margin-top: 28px;
-        }
-
-        .modalActions .cta {
-          flex: 1;
-        }
-
-        @media (min-width: 1024px) {
-          .signalCard {
-            display: block;
-          }
-        }
-
-        @media (max-width: 760px) {
-          .navLinks {
-            display: none;
-          }
-
-          .hero {
-            padding-bottom: 56px;
-          }
-
-          .searchBar {
-            align-items: flex-start;
-            border-radius: 28px;
-          }
-
-          .actions,
-          .modalActions {
-            flex-direction: column;
-          }
-
-          .steps {
-            grid-template-columns: 1fr;
-          }
-        }
-
-        @keyframes fadeUp {
-          from {
-            opacity: 0;
-            transform: translateY(18px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        @keyframes drift {
-          from {
-            background-position: 0% 42%, 100% 50%, 0 0;
-          }
-          to {
-            background-position: 18% 50%, 76% 38%, 0 0;
-          }
-        }
-
-        @keyframes floatSlow {
-          0%,
-          100% {
-            transform: translateY(0);
-          }
-          50% {
-            transform: translateY(-10px);
-          }
-        }
-      `}</style>
     </main>
   );
 }

@@ -1,7 +1,5 @@
-export default function ArtistsPage() {
-  return (
-    <main>
-      <h1>Artists</h1>
-    </main>
-  );
+import ArtistsDashboard from "@/components/ArtistsDashboard";
+
+export default function Artists() {
+  return <ArtistsDashboard />;
 }
