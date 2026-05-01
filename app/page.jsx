@@ -68,9 +68,17 @@ export default function LandingPage() {
 
   const submitSearch = (event) => {
     event.preventDefault();
-    const normalizedArtist = artistName.trim();
-    if (!normalizedArtist) return;
+    const normalizedArtist = artistName.trim() || "TWICE";
+    if (normalizedArtist.toLowerCase() === "twice") {
+      router.push("/market-insights?artistId=twice");
+      return;
+    }
     router.push(`/market-insights?artist=${encodeURIComponent(normalizedArtist)}`);
+  };
+
+  const runTwiceDemo = () => {
+    setArtistName("TWICE");
+    router.push("/market-insights?artistId=twice");
   };
 
   return (
@@ -91,7 +99,7 @@ export default function LandingPage() {
           <Link href="/how-it-works" className="transition hover:text-white">
             How It Works
           </Link>
-          <Link href="/results" className="transition hover:text-white">
+          <Link href="/market-insights?artistId=twice" className="transition hover:text-white">
             Demo
           </Link>
           <PrimaryLink href="/workspace" className="min-h-10 px-5 py-2 text-xs">
@@ -118,15 +126,18 @@ export default function LandingPage() {
             <span className="block">Stop guessing markets.</span>
             <span className="block font-black text-white">Start selling out cities.</span>
           </p>
+          <p className="mt-5 max-w-3xl animate-fadeUp text-sm font-semibold leading-6 text-white/56 [animation-delay:380ms] md:text-base md:leading-7">
+            Axcess uses fan demand, engagement, tour history, and market gap signals to recommend where artists should perform, how many dates to book, and what capacity to target.
+          </p>
 
           <form onSubmit={submitSearch} className="mt-10 max-w-2xl animate-fadeUp [animation-delay:460ms]">
-            <div className="group flex min-h-16 items-center gap-4 rounded-full border border-white/20 bg-white/[.085] px-6 py-3 text-base font-extrabold text-white/72 shadow-[0_24px_90px_rgba(0,0,0,.42)] backdrop-blur-xl transition duration-300 hover:border-red-300/70 hover:shadow-[0_0_34px_rgba(225,29,72,.22)]">
+            <div className="group flex min-h-16 items-center gap-4 rounded-[1.75rem] border border-white/20 bg-white/[.085] px-5 py-3 text-base font-extrabold text-white/72 shadow-[0_24px_90px_rgba(0,0,0,.42)] backdrop-blur-xl transition duration-300 hover:border-red-300/70 hover:shadow-[0_0_34px_rgba(225,29,72,.22)] sm:rounded-full sm:px-6">
               <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-ax-hot shadow-[0_0_18px_rgba(225,29,72,.8)]" />
               <input
                 value={artistName}
                 onChange={(event) => setArtistName(event.target.value)}
                 className="min-w-0 flex-1 bg-transparent text-white outline-none placeholder:text-white/55"
-                placeholder="Enter an artist to generate a tour plan (e.g. TWICE, Drake, Taylor Swift)"
+                placeholder="Enter an artist to generate a tour plan, e.g. TWICE"
                 aria-label="Artist name"
               />
               <button
@@ -136,25 +147,38 @@ export default function LandingPage() {
                 Analyze
               </button>
             </div>
+            <button
+              type="button"
+              onClick={runTwiceDemo}
+              className="mt-4 inline-flex rounded-full border border-white/15 bg-white/[.055] px-4 py-2 text-xs font-black uppercase tracking-[.14em] text-white/64 transition hover:border-red-300/70 hover:text-white hover:shadow-[0_0_20px_rgba(225,29,72,.18)]"
+            >
+              Try: TWICE
+            </button>
           </form>
 
           <div className="mt-8 flex animate-fadeUp flex-col gap-4 [animation-delay:600ms] sm:flex-row">
-            <PrimaryLink href="/dashboard" className="px-10">
-              Try It Now
+            <PrimaryLink href="/market-insights?artistId=twice" className="px-10">
+              Run TWICE Demo
             </PrimaryLink>
             <SecondaryButton onClick={() => setModalOpen(true)} className="px-10">
               See How It Works
             </SecondaryButton>
           </div>
+          <p className="mt-5 max-w-3xl animate-fadeUp text-xs font-bold leading-6 text-white/42 [animation-delay:700ms] md:text-sm">
+            Powered by Spotify, YouTube, Google Trends, Ticketmaster, venue data, and uploaded tour history.
+          </p>
         </div>
 
         <aside className="absolute bottom-[12vh] right-[7vw] hidden animate-floatSlow rounded-[2rem] border border-white/15 bg-white/[.055] p-6 shadow-[0_28px_110px_rgba(0,0,0,.48)] backdrop-blur-xl lg:block">
           <p className="text-xs font-black uppercase tracking-[.18em] text-white/45">
-            Routing signal
+            Demo insight
           </p>
           <div className="mt-3 text-5xl font-black">+27%</div>
-          <p className="mt-2 max-w-48 text-sm font-bold leading-6 text-white/60">
-            underserved demand lift across priority markets
+          <p className="mt-2 max-w-56 text-sm font-bold leading-6 text-white/60">
+            underserved demand signal across priority markets
+          </p>
+          <p className="mt-4 max-w-56 border-t border-white/10 pt-4 text-xs font-bold leading-5 text-white/42">
+            Identifies high-demand cities with unmet touring potential.
           </p>
         </aside>
       </section>
