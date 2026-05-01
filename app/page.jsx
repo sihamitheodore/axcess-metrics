@@ -7,7 +7,7 @@ import { useState } from "react";
 const steps = [
   {
     title: "Create the profile",
-    body: "Start with an artist name, then layer in optional streaming, social, and tour history signals."
+    body: "Start with an artist name, then layer in streaming, social, and tour history signals."
   },
   {
     title: "Read the markets",
@@ -19,7 +19,7 @@ const steps = [
   },
   {
     title: "Share the report",
-    body: "Package city rankings, venue recommendations, capacity ranges, and routing notes."
+    body: "Export city rankings, venue recommendations, capacity ranges, and routing notes."
   }
 ];
 
@@ -59,8 +59,12 @@ function SecondaryLink({ href, children, className = "" }) {
 
 export default function LandingPage() {
   const [modalOpen, setModalOpen] = useState(false);
+  const [activeStep, setActiveStep] = useState(0);
   const [artistName, setArtistName] = useState("");
   const router = useRouter();
+  const currentStep = steps[activeStep];
+  const isFirstStep = activeStep === 0;
+  const isLastStep = activeStep === steps.length - 1;
 
   const submitSearch = (event) => {
     event.preventDefault();
@@ -174,25 +178,67 @@ export default function LandingPage() {
               </button>
             </div>
 
-            <div className="mt-7 grid gap-3 md:grid-cols-2">
-              {steps.map((step, index) => (
-                <article key={step.title} className="rounded-2xl border border-white/10 bg-white/[.055] p-5">
-                  <p className="text-xs font-black uppercase tracking-[.16em] text-white/40">
-                    Step {index + 1}
-                  </p>
-                  <h3 className="mt-3 text-xl font-black">{step.title}</h3>
-                  <p className="mt-2 text-sm font-semibold leading-6 text-white/62">{step.body}</p>
-                </article>
-              ))}
+            <div className="mt-7 flex items-center justify-between gap-4">
+              <p className="text-xs font-black uppercase tracking-[.18em] text-white/45">
+                Step {activeStep + 1} of {steps.length}
+              </p>
+              <div className="flex gap-2">
+                {steps.map((step, index) => (
+                  <button
+                    type="button"
+                    key={step.title}
+                    aria-label={`Go to ${step.title}`}
+                    onClick={() => setActiveStep(index)}
+                    className={`h-2.5 rounded-full transition-all duration-300 ${
+                      index === activeStep
+                        ? "w-9 bg-ax-hot shadow-[0_0_18px_rgba(225,29,72,.8)]"
+                        : "w-2.5 bg-white/25 hover:bg-white/55"
+                    }`}
+                  />
+                ))}
+              </div>
             </div>
 
-            <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-              <PrimaryLink href="/dashboard" className="flex-1">
-                Start
-              </PrimaryLink>
-              <SecondaryLink href="/dashboard" className="flex-1">
+            <div className="mt-5 min-h-72 rounded-[1.8rem] border border-white/10 bg-white/[.055] p-7 transition-all duration-300">
+              <p className="text-xs font-black uppercase tracking-[.16em] text-red-300">
+                Step {activeStep + 1}
+              </p>
+              <h3 className="mt-4 text-4xl font-black leading-tight tracking-tight md:text-5xl">
+                {currentStep.title}
+              </h3>
+              <p className="mt-5 max-w-2xl text-base font-semibold leading-7 text-white/62">
+                {currentStep.body}
+              </p>
+            </div>
+
+            <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <button
+                type="button"
+                disabled={isFirstStep}
+                onClick={() => setActiveStep((step) => Math.max(0, step - 1))}
+                className="inline-flex min-h-14 items-center justify-center rounded-full border border-white/20 bg-white/10 px-9 py-4 text-sm font-black text-white shadow-[0_24px_70px_rgba(0,0,0,.18)] backdrop-blur-xl transition duration-300 hover:border-red-300/70 disabled:cursor-default disabled:opacity-40 disabled:hover:border-white/20"
+              >
+                Back
+              </button>
+
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <SecondaryLink href="/dashboard">
                 Skip
-              </SecondaryLink>
+                </SecondaryLink>
+                {isLastStep ? (
+                  <PrimaryLink href="/dashboard">
+                    Start Demo
+                  </PrimaryLink>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => setActiveStep((step) => Math.min(steps.length - 1, step + 1))}
+                    className="inline-flex min-h-14 items-center justify-center rounded-full bg-gradient-to-r from-[#B11226] to-[#E11D48] px-9 py-4 text-sm font-black text-white shadow-[0_0_30px_rgba(225,29,72,.38)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_44px_rgba(225,29,72,.55)]"
+                  >
+                    Next
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         </div>
